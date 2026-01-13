@@ -7,7 +7,7 @@ import (
 
 	"github.com/kismia/rabbitmq-go-client"
 	"github.com/kismia/rabbitmq-go-client/util/identity"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 const (

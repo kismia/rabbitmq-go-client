@@ -1,6 +1,6 @@
 package recovery
 
-import "github.com/streadway/amqp"
+import amqp "github.com/rabbitmq/amqp091-go"
 
 func blockingListener(conn *amqp.Connection, l chan amqp.Blocking) {
 	for n := range conn.NotifyBlocked(make(chan amqp.Blocking)) {

@@ -6,7 +6,7 @@ import (
 
 	"github.com/cenkalti/backoff"
 	"github.com/kismia/rabbitmq-go-client"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 var ErrRecoverBackOff = &amqp.Error{Code: amqp.ChannelError, Reason: "channel/connection recovery back-off"}
@@ -124,8 +124,7 @@ func (c *connection) unregisterChannel(ch *channel) {
 func (c *connection) addAutomaticRecoveryListener(conn *amqp.Connection) {
 	rabbitmq.Logger.Print("start connection recovery listener")
 
-	select {
-	case err := <-conn.NotifyClose(make(chan *amqp.Error)):
+	if err, ok := <-conn.NotifyClose(make(chan *amqp.Error)); ok {
 		if shouldTriggerConnectionRecovery(err) {
 			rabbitmq.Logger.Println("error connection closed:", err)
 			c.beginAutomaticRecovery()

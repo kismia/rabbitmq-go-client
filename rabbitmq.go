@@ -1,13 +1,13 @@
 package rabbitmq
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-var Logger StdLogger = log.New(ioutil.Discard, "[rabbitmq] ", log.LstdFlags)
+var Logger StdLogger = log.New(io.Discard, "[rabbitmq] ", log.LstdFlags)
 
 type Connection interface {
 	Channel() (Channel, error)
@@ -22,7 +22,6 @@ type Channel interface {
 	Cancel(consumer string, noWait bool) error
 	QueueDeclare(name string, durable, autoDelete, exclusive, noWait bool, args amqp.Table) (amqp.Queue, error)
 	QueueDeclarePassive(name string, durable, autoDelete, exclusive, noWait bool, args amqp.Table) (amqp.Queue, error)
-	QueueInspect(name string) (amqp.Queue, error)
 	QueueBind(name, key, exchange string, noWait bool, args amqp.Table) error
 	QueueUnbind(name, key, exchange string, args amqp.Table) error
 	QueuePurge(name string, noWait bool) (int, error)
@@ -41,7 +40,7 @@ type Channel interface {
 	Flow(active bool) error
 	Confirm(noWait bool) error
 	Ack(tag uint64, multiple bool) error
-	Nack(tag uint64, multiple bool, requeue bool) error
+	Nack(tag uint64, multiple, requeue bool) error
 	Reject(tag uint64, requeue bool) error
 	NotifyClose(c chan *amqp.Error) chan *amqp.Error
 	NotifyFlow(c chan bool) chan bool

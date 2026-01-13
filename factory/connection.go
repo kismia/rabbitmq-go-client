@@ -8,7 +8,7 @@ import (
 	"github.com/kismia/rabbitmq-go-client"
 	"github.com/kismia/rabbitmq-go-client/balancer"
 	"github.com/kismia/rabbitmq-go-client/recovery"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 const (
@@ -94,7 +94,7 @@ func (f *ConnectionFactory) config() amqp.Config {
 			},
 		},
 		Vhost:           f.Vhost,
-		ChannelMax:      f.ChannelMax,
+		ChannelMax:      uint16(f.ChannelMax),
 		FrameSize:       f.FrameSize,
 		Heartbeat:       f.Heartbeat,
 		TLSClientConfig: f.TLSClientConfig,
