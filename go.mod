@@ -1,8 +1,8 @@
 module github.com/kismia/rabbitmq-go-client
 
-go 1.12
+go 1.25.3
 
 require (
-	github.com/cenkalti/backoff v2.1.1+incompatible
-	github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94
+	github.com/cenkalti/backoff v2.2.1+incompatible
+	github.com/rabbitmq/amqp091-go v1.10.0
 )

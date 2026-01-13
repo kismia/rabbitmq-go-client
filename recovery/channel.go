@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/kismia/rabbitmq-go-client"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 type channel struct {
@@ -57,10 +57,6 @@ func (ch *channel) QueueDeclare(name string, durable, autoDelete, exclusive, noW
 
 func (ch *channel) QueueDeclarePassive(name string, durable, autoDelete, exclusive, noWait bool, args amqp.Table) (amqp.Queue, error) {
 	return ch.delegate.load().QueueDeclarePassive(name, durable, autoDelete, exclusive, noWait, args)
-}
-
-func (ch *channel) QueueInspect(name string) (amqp.Queue, error) {
-	return ch.delegate.load().QueueInspect(name)
 }
 
 func (ch *channel) QueueBind(name, key, exchange string, noWait bool, args amqp.Table) error {
@@ -190,7 +186,7 @@ func (ch *channel) Ack(tag uint64, multiple bool) error {
 	return ch.delegate.load().Ack(tag, multiple)
 }
 
-func (ch *channel) Nack(tag uint64, multiple bool, requeue bool) error {
+func (ch *channel) Nack(tag uint64, multiple, requeue bool) error {
 	return ch.delegate.load().Nack(tag, multiple, requeue)
 }
 
